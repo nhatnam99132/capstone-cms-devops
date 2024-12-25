@@ -27,6 +27,11 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
+      # Install the gke-gcloud-auth-plugin
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          sudo apt-get update && sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+
       # Add Helm repositories
       - name: Add Helm Repositories
         run: |

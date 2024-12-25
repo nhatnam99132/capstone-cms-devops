@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dremio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dremio
+  template:
+    metadata:
+      labels:
+        app: dremio
+    spec:
+      containers:
+        - name: dremio
+          image: {{ .Values.dremio.image }}:{{ .Values.dremio.tag }}
+          ports:
+            - containerPort: 9047
+          volumeMounts:
+            - name: storage
+              mountPath: /var/lib/dremio
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: dremio-pvc

@@ -55,6 +55,7 @@ jobs:
       - name: Trigger Helm Install Workflow
         uses: github.actions/dispatch@v2
         with:
+          owner: nhatnam99132
           repo: capstone-cms-devops
           workflow: helm-install.yml
           ref: main

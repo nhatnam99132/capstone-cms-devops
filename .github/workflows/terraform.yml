@@ -50,5 +50,5 @@ jobs:
   # Call the Helm Install workflow after terraform is done
   helm-install:
     needs: terraform
-    uses: './github/workflows/helm-install.yml'
+    uses: ./github/workflows/helm-install.yml@main
     secrets: inherit

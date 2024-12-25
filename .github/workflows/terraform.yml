@@ -53,7 +53,7 @@ jobs:
     needs: terraform
     steps:
       - name: Trigger Helm Install Workflow
-        uses: peter-evans/workflow-dispatch@v1
+        uses: github.actions/dispatch@v2
         with:
           workflow: helm-install.yml
           ref: main

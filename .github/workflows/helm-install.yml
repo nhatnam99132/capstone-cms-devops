@@ -31,11 +31,12 @@ jobs:
           curl -sSL https://sdk.cloud.google.com | bash
           source ~/.bashrc
 
-      # Install the gke-gcloud-auth-plugin
+      # Install the gke-gcloud-auth-plugin (via apt-get)
       - name: Install gke-gcloud-auth-plugin
         run: |
           echo "Installing gke-gcloud-auth-plugin..."
-          gcloud components install gke-gcloud-auth-plugin
+          sudo apt-get update
+          sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
 
       # Add Helm repositories
       - name: Add Helm Repositories

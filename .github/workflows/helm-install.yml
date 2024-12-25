@@ -37,7 +37,7 @@ jobs:
       # Get GKE credentials
       - name: Get GKE Credentials
         run: |
-          gcloud container clusters get-credentials devops-gke-cluster-02 --region asia-southeast1 --project woven-honor-443710-f5
+          gcloud container clusters get-credentials devops-gke-cluster --zone asia-southeast1-a --project woven-honor-443710-f5
 
       # Install Ingress Nginx
       - name: Install Ingress Nginx

@@ -1,0 +1,53 @@
+name: Terraform Deploy to GCP
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      # Check out the code from the repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Set up Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 6.12.0
+
+      # Authenticate with GCP
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      # Initialize Terraform
+      - name: Terraform Init
+        run: terraform init
+
+      # Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      # Terraform Apply
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+
+  # Call the Helm Install workflow after terraform is done
+  helm-install:
+    runs-on: ubuntu-latest
+    needs: terraform
+    steps:
+      - name: Trigger Helm Install Workflow
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          workflow: helm-install.yml
+          ref: main

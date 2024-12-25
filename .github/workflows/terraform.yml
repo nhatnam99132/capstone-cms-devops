@@ -46,3 +46,8 @@ jobs:
         run: |
           cd terraform
           terraform apply -auto-approve tfplan
+
+  # Call the Helm Install workflow after terraform is done
+  helm-install:
+    needs: terraform
+    uses: helm-install.yml

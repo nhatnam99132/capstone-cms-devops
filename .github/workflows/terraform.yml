@@ -31,15 +31,21 @@ jobs:
 
       # Initialize Terraform
       - name: Terraform Init
-        run: terraform init
+        run: |
+          cd terraform
+          terraform init
 
       # Terraform Plan
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: |
+          cd terraform
+          terraform plan -out=tfplan
 
       # Terraform Apply
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: |
+          cd terraform
+          terraform apply -auto-approve tfplan
 
   # Call the Helm Install workflow after terraform is done
   helm-install:

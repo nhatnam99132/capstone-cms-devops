@@ -24,19 +24,14 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      # Install Google Cloud SDK
-      - name: Install Google Cloud SDK
-        run: |
-          echo "Installing Google Cloud SDK..."
-          curl -sSL https://sdk.cloud.google.com | bash
-          source ~/.bashrc
-
-      # Install the gke-gcloud-auth-plugin (via apt-get)
-      - name: Install gke-gcloud-auth-plugin
-        run: |
-          echo "Installing gke-gcloud-auth-plugin..."
-          sudo apt-get update
-          sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
+      # Get GKE credentials (this replaces the manual SDK and plugin installation)
+      - name: Get GKE credentials
+        id: 'get-credentials'
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: devops-gke-cluster
+          location: asia-southeast1-a
+          project_id: woven-honor-443710-f5
 
       # Add Helm repositories
       - name: Add Helm Repositories
@@ -44,11 +39,6 @@ jobs:
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm repo update
-
-      # Get GKE credentials
-      - name: Get GKE Credentials
-        run: |
-          gcloud container clusters get-credentials devops-gke-cluster --zone asia-southeast1-a --project woven-honor-443710-f5
 
       # Install Ingress Nginx
       - name: Install Ingress Nginx

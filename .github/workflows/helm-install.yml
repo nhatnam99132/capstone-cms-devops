@@ -43,7 +43,7 @@ jobs:
       # Install Ingress Nginx if not already installed
       - name: Install Ingress Nginx
         run: |
-          if ! helm status ingress-nginx &>/dev/null; then
+          if ! helm status ingress-nginx -n ingress &>/dev/null; then
             helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress --create-namespace --set controller.service.type=LoadBalancer --set controller.service.externalTrafficPolicy=Local
           else
             echo "Ingress Nginx is already installed, skipping..."
@@ -72,7 +72,7 @@ jobs:
       # Install Grafana (Prometheus stack) if not already installed
       - name: Install Grafana
         run: |
-          if ! helm status grafana &>/dev/null; then
+          if ! helm status grafana -n monitoring &>/dev/null; then
             helm install grafana prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --set forceCreateNamespace=true -f grafana.yml
           else
             echo "Grafana is already installed, skipping..."
@@ -81,7 +81,7 @@ jobs:
       # Install my-chart if not already installed
       - name: Install My Chart
         run: |
-          if ! helm status my-chart &>/dev/null; then
+          if ! helm status my-chart -n my-app &>/dev/null; then
             helm install my-chart my-chart/ --namespace my-app --create-namespace
           else
             echo "My Chart is already installed, skipping..."

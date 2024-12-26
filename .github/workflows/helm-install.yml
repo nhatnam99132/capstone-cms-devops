@@ -60,11 +60,13 @@ jobs:
       - name: Replace IP in values.yaml
         run: |
           sed -i "s/\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)\.nip\.io/$EXTERNAL_IP.nip.io/g" ./my-chart/values.yaml
+          cat ./my-chart/values.yaml
 
       # Replace nip.io in grafana.yml with the actual EXTERNAL_IP
       - name: Replace nip.io in grafana.yml
         run: |
           sed -i "s/\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)\.nip\.io/$EXTERNAL_IP.nip.io/g" grafana.yml
+          cat grafana.yaml
 
 
       # Install Grafana (Prometheus stack) if not already installed
